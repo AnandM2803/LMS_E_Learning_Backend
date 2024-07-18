@@ -1,15 +1,26 @@
 const express = require('express');
-require('dotenv').config();
+const cors = require('cors');
+const dotenv = require('dotenv');
+const connectDB = require('./src/config/db');
+//load .env file
+dotenv.config();
 
-// Setup db connection
-require('./src/config/db');
-// API Routes 
-const apiRoutes = require('./src/routes/api.routes');
 const app = express();
-app.use(express.json());
-app.use('/api', apiRoutes); // Corrected from './api' to '/api'
-const port = process.env.PORT || 3000;
 
-app.listen(port, () => {
-    console.log(`My Server is Running at http://localhost:${port}`);
+// connect to mongoDB
+connectDB();
+
+// Use CORS to allow requests from frontend
+app.use(cors({ origin: process.env.CORS_ORIGIN }));
+const apiRoutes = require('./src/routes/api.routes');
+app.use(express.json());
+
+// connect ApiRoutes
+const authRoutes = require('./src/routes/auth');
+app.use('/api/auth', authRoutes);
+app.use('/api', apiRoutes);
+
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
 });
