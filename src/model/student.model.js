@@ -3,9 +3,9 @@ const bcrypt = require('bcryptjs');
 const Schema = mongoose.Schema;
 
 const studentSchema = new Schema({
-  firstName: { type: String, required: true, minlength: 4 },
-  lastName: { type: String, required: true, minlength: 4 },
-  userName: { type: String, required: true, minlength: 4 },
+  firstName: { type: String, required: true, minlength: 2 },
+  lastName: { type: String, required: true, minlength: 2 },
+  userName: { type: String, required: true, minlength: 3 },
   email: { type: String, required: true, unique: true, lowercase: true },
   password: { type: String, required: true, minlength: 8 },
   phone: { type: Number, required: true, unique: true, minlength: 10, maxlength: 12 },
@@ -31,7 +31,7 @@ studentSchema.methods.comparePassword = async function (candidatePassword) {
   try {
     return await bcrypt.compare(candidatePassword, this.password);
   } catch (error) {
-    throw new Error(error);
+    throw new Error(error.message);
   }
 };
 
