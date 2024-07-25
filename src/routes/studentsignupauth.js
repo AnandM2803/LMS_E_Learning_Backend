@@ -1,29 +1,23 @@
 const express = require('express');
 const router = express.Router();
-const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const Student = require('../model/student.model');
 
-// Signup route
 router.post('/signup', async (req, res) => {
     const { firstName, lastName, userName, email, password, phone, address } = req.body;
-        console.log('Signup attempt:', req.body);
+    console.log('Signup attempt:', req.body);
 
     try {
-        // Check if the user already exists
         let user = await Student.findOne({ email });
         if (user) {
             return res.status(400).json({ msg: 'User already exists' });
         }
-
-        // Create a new user
-        const hashedPassword = await bcrypt.hash(password, 10);
         user = new Student({
             firstName,
             lastName,
             userName,
             email,
-            password: hashedPassword,
+            password,
             phone,
             address,
             role: 'student',
@@ -33,7 +27,7 @@ router.post('/signup', async (req, res) => {
 
         await user.save();
 
-        // Generate JWT
+        // generate Java web token
         const payload = { user: { id: user.id } };
         jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1h' }, (err, token) => {
             if (err) throw err;

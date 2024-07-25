@@ -1,39 +1,34 @@
 const mongoose = require('mongoose');
-const bcrypt = require('bcryptjs');
-const Schema = mongoose.Schema;
+const bcrypt = require('bcrypt');
 
-const studentSchema = new Schema({
-  firstName: { type: String, required: true, minlength: 2 },
-  lastName: { type: String, required: true, minlength: 2 },
-  userName: { type: String, required: true, minlength: 3 },
-  email: { type: String, required: true, unique: true, lowercase: true },
-  password: { type: String, required: true, minlength: 8 },
-  phone: { type: Number, required: true, unique: true, minlength: 10, maxlength: 12 },
+const studentSchema = new mongoose.Schema({
+  firstName: { type: String, required: true },
+  lastName: { type: String, required: true },
+  userName: { type: String, required: true },
+  email: { type: String, required: true, unique: true },
+  password: { type: String, required: true },
+  phone: { type: Number, required: true },
   address: { type: String, required: true },
-  role: { type: String, required: true, default: 'student' },
-  avatar: { type: String, required: true, default: 'avatar.webp' },
-  enrolledCourses: [{ type: Schema.Types.ObjectId, ref: 'Course' }],
-}, { versionKey: false, timestamps: true });
+  role: { type: String, required: true },
+  avatar: { type: String, required: true },
+  enrolledCourses: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Course' }],
+}, { timestamps: true });
 
-studentSchema.pre('save', async function (next) {
+// Hash password before saving
+studentSchema.pre('save', async function(next) {
   if (!this.isModified('password')) return next();
-
   try {
     const salt = await bcrypt.genSalt(10);
     this.password = await bcrypt.hash(this.password, salt);
     next();
-  } catch (error) {
-    return next(error);
+  } catch (err) {
+    next(err);
   }
 });
 
-studentSchema.methods.comparePassword = async function (candidatePassword) {
-  try {
-    return await bcrypt.compare(candidatePassword, this.password);
-  } catch (error) {
-    throw new Error(error.message);
-  }
+// Compare password 
+studentSchema.methods.comparePassword = async function(enteredPassword) {
+  return await bcrypt.compare(enteredPassword, this.password);
 };
 
-const Student = mongoose.model('Student', studentSchema);
-module.exports = Student;
+module.exports = mongoose.model('Student', studentSchema);

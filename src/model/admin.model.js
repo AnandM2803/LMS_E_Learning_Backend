@@ -3,7 +3,7 @@ const bcrypt = require('bcryptjs');
 const Schema=mongoose.Schema;
 
 const adminSchema=new Schema({
-    firstname:{type:String,required:true,minlength:4},
+    firstName:{type:String,required:true,minlength:4},
     lastName:{type:String,required:true,minlength:4},
     userName:{type:String,required:true,unique:true,lowercase:true,minlength:4},
     email:{type:String,required:true,unique:true,lowercase:true},
