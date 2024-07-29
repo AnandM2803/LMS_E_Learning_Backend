@@ -21,10 +21,41 @@ class CourseController extends BaseController {
       if (err) {
         return res.status(500).json({ error: err.message });
       }
-      const { courseName, author, courseRating, coursePrice, description, videoUrl, tabCourseDescription, tabCourseReview, tabCourseDiscussion, tabCourseResources, courseIndex, isPaidCourse } = req.body;
+      const {
+        courseName,
+        author,
+        courseRating,
+        coursePrice,
+        description,
+        videoUrl,
+        tabCourseDescription,
+        tabCourseReview,
+        tabCourseDiscussion,
+        tabCourseResources,
+        isPaidCourse,
+        chapterVideoLinks,
+        chapter1Name,
+        chapter1VideoName,
+        chapter2Name,
+        chapter2VideoName,
+        chapter3Name,
+        chapter3VideoName,
+        chapter4Name,
+        chapter4VideoName,
+        chapter5Name,
+        chapter5VideoName,
+        chapter6Name,
+        chapter6VideoName,
+        chapter7Name,
+        chapter7VideoName,
+        chapter8Name,
+        chapter8VideoName,
+      } = req.body;
+
       const courseImg = req.file ? `uploads/${req.file.filename}` : '';
 
       try {
+        const parsedChapterVideoLinks = JSON.parse(chapterVideoLinks);
         const newCourse = await this.repo.create({
           courseName,
           author,
@@ -37,8 +68,24 @@ class CourseController extends BaseController {
           tabCourseReview,
           tabCourseDiscussion,
           tabCourseResources,
-          courseIndex,
-          isPaidCourse
+          isPaidCourse,
+          chapterVideoLinks: Array.isArray(parsedChapterVideoLinks) ? parsedChapterVideoLinks : [parsedChapterVideoLinks],
+          chapter1Name,
+          chapter1VideoName,
+          chapter2Name,
+          chapter2VideoName,
+          chapter3Name,
+          chapter3VideoName,
+          chapter4Name,
+          chapter4VideoName,
+          chapter5Name,
+          chapter5VideoName,
+          chapter6Name,
+          chapter6VideoName,
+          chapter7Name,
+          chapter7VideoName,
+          chapter8Name,
+          chapter8VideoName,
         });
         res.status(201).json(newCourse);
       } catch (error) {
