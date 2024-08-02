@@ -20,7 +20,6 @@ const apiRoutes = require('./src/routes/api.routes');
 app.use('/uploads', express.static('uploads'));
 app.use(express.json());
 
-// connect ApiRoutes
 const authRoutes = require('./src/routes/auth');
 const adminRoutes=require('./src/routes/adminauth')
 const studentsignupauth=require('./src/routes/studentsignupauth')
