@@ -18,11 +18,12 @@ class BaseRepository {
         return data;
     }
 
-    async update(model) {
+    async update(id, model) {
         var options = { new: true };
-        var data = await this.collection.findByIdAndUpdate(model._id, model, options);
-        return data;
+        var data = await this.collection.findOneAndUpdate({ _id: id }, model, options);
+        return data.value;
     }
+    
 
     async deleteById(id) {
         var data = await this.collection.findByIdAndDelete(id);

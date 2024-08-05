@@ -1,22 +1,23 @@
 const express = require('express');
 const router = express.Router();
-const Admin = require('../model/admin.model');
+const Instructor = require('../model/instructore.model');
 
-router.post('/adminlogin', async (req, res) => {
+// Login route
+router.post('/instructorlogin', async (req, res) => {
   const { email, password } = req.body;
 
   try {
-    const admin = await Admin.findOne({ email }).exec();
-    if (!admin) {
+    const instructor = await Instructor.findOne({ email }).exec();
+    if (!instructor) {
       return res.status(401).json({ message: 'Invalid email or password' });
     }
 
-    const isPasswordValid = await admin.comparePassword(password);
+    const isPasswordValid = await instructor.comparePassword(password);
 
     if (!isPasswordValid) {
       return res.status(401).json({ message: 'Invalid email or password' });
     }
-    res.json({ message: 'Login successful', admin });
+    res.json({ message: 'Login successful', instructor });
   } catch (error) {
     console.error('Login failed:', error);
     res.status(500).json({ message: 'Server error' });

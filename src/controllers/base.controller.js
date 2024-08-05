@@ -62,13 +62,26 @@ class BaseController {
     update = (req, res) => {
         let id = req.params.id;
         const body = req.body;
-        this.repo.update(body).then(data => {
-            return this.ok(res, data);
+        console.log('Update Request ID:', id);
+        console.log('Update Request Body:', body);
+    
+        this.repo.update(id, body).then(data => {
+            if (data) {
+                console.log('Updated Data:', data);
+                return this.ok(res, data);
+            } else {
+                console.log('No Data Found for ID:', id);
+                return this.notFound(res, 'Data not found for the provided ID');
+            }
         }).catch(err => {
-            console.error(err);
+            console.error('Update Error:', err);
             return this.internalServerError(res, err);
         });
     }
+
+    
+    
+    
 
     deleteById = (req, res) => {
         let id = req.params.id;
