@@ -7,6 +7,7 @@ const courseSchema = new Schema({
   author: { type: String, required: true },
   courseRating: { type: String, required: true },
   courseImg: { type: String, required: true },
+  authorImage:{type:String,reuired:true},
   coursePrice: { type: Number, required: true },
   isPaidCourse: { type: Boolean, required: true, default: true },
   description: { type: String, required: true },
@@ -15,6 +16,7 @@ const courseSchema = new Schema({
   tabCourseReview: { type: String, required: true },
   tabCourseDiscussion: { type: String, required: true },
   tabCourseResources: { type: String, required: true },
+  aboutCourseDescription: {type: String,required:true},
   chapterVideoLinks: {
     type: [String],
     required: true,

@@ -37,6 +37,7 @@ studentSchema.pre('findOneAndUpdate', async function(next) {
   next();
 });
 
+
 studentSchema.methods.comparePassword = async function(enteredPassword) {
   return await bcrypt.compare(enteredPassword, this.password);
 };

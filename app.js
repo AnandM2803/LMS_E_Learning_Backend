@@ -5,6 +5,8 @@ const connectDB = require('./src/config/db');
 //load .env file
 dotenv.config();
 
+
+
 const app = express();
 
 // connect to mongoDB
@@ -25,6 +27,7 @@ const adminLogin=require('./src/routes/adminauth')
 const instructorLogin=require('./src/routes/instructorauth')
 const studentsignupauth=require('./src/routes/studentsignupauth')
 const adminsignupauth=require('./src/routes/adminsignupauth')
+const instructorsignupauth=require('./src/routes/instructorsignupauth')
 
 
 
@@ -33,6 +36,7 @@ app.use('/api/adminauth',adminLogin);
 app.use('/api/instructorauth',instructorLogin);
 app.use('/api/studentsignupauth',studentsignupauth)
 app.use('/api/adminsignupauth',adminsignupauth);
+app.use('/api/instructorsignupauth',instructorsignupauth)
 app.use('/api', apiRoutes);
 
 const PORT = process.env.PORT || 5000;

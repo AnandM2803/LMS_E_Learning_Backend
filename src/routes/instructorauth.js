@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const Instructor = require('../model/instructore.model');
+const Instructor = require('../model/instructorProfile.model');
 
 // Login route
 router.post('/instructorlogin', async (req, res) => {
